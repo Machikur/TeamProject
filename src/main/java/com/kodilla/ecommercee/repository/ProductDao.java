@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Transactional
 @Repository
@@ -14,11 +13,7 @@ public interface ProductDao extends CrudRepository<Product, Long> {
     @Override
     List<Product> findAll();
 
-    @Override
-    Optional<Product> findById(Long productId);
-
-    @Override
-    void deleteById(Long productId);
-
     boolean existsByProductName(String productName);
+
+    List<Product> findAllByProductIdIn(List<Long> list);
 }

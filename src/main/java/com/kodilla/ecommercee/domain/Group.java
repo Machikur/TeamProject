@@ -39,8 +39,4 @@ public class Group {
         this.groupName = groupName;
     }
 
-    public Group(final Long id, final String groupName) {
-        this.groupName = groupName;
-        this.id = id;
-    }
 }

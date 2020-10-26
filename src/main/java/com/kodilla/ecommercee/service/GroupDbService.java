@@ -24,7 +24,7 @@ public class GroupDbService {
     }
 
     public Group saveGroup(final Group group) throws GroupConflictException {
-        if(!groupDao.existsById(group.getId())) {
+        if (!groupDao.existsById(group.getId())) {
             return groupDao.save(group);
         } else {
             throw new GroupConflictException();
@@ -32,7 +32,7 @@ public class GroupDbService {
     }
 
     public void deleteGroup(final Long id) throws GroupNotFoundException {
-        if(groupDao.existsById(id)) {
+        if (groupDao.existsById(id)) {
             groupDao.deleteById(id);
         } else {
             throw new GroupNotFoundException();

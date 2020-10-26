@@ -46,7 +46,7 @@ public class CartController {
     public Cart deleteProduct(@PathVariable Long cartId, @PathVariable Long productId) throws CartNotFoundException, ProductNotFoundException {
         return cartDbService.deleteProductFromCart(cartId, productId);
     }
-  
+
     @PostMapping("/createOrder/{cartId}/{userId}")
     public OrderDto createOrder(@PathVariable Long cartId, @PathVariable Long userId) throws CartNotFoundException, UserNotFoundException {
         return orderMapper.mapToOrderDto(cartDbService.createOrder(cartId, userId));

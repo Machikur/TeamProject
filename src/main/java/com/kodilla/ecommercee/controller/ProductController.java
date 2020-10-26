@@ -23,27 +23,27 @@ public class ProductController {
     @Autowired
     private ProductMapper productMapper;
 
-    @RequestMapping(method = RequestMethod.GET, value = "getAllProducts")
+    @GetMapping(value = "getAllProducts")
     public List<ProductDto> getAllProducts() {
-        return productMapper.mapToTaskDtoList(productDbService.getAllProducts());
+        return productMapper.mapToProductDtoList(productDbService.getAllProducts());
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "getProduct")
+    @GetMapping(value = "getProduct")
     public ProductDto getProduct(@RequestParam(value = "productId") Long productId) throws ProductNotFoundException {
         return productMapper.mapToProductDto(productDbService.getProductById(productId).orElseThrow(ProductNotFoundException::new));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "createProduct", consumes = APPLICATION_JSON_VALUE)
+    @PostMapping(value = "createProduct", consumes = APPLICATION_JSON_VALUE)
     public void createProduct(@RequestBody ProductDto productDto) throws ProductConflictException {
         productDbService.saveProduct(productMapper.mapToProduct(productDto));
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "updateProduct")
+    @PutMapping(value = "updateProduct")
     public ProductDto updateProduct(@RequestBody ProductDto productDto) throws ProductConflictException {
         return productMapper.mapToProductDto(productDbService.saveProduct(productMapper.mapToProduct(productDto)));
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "deleteProduct")
+    @DeleteMapping(value = "deleteProduct")
     public void deleteProduct(@RequestParam(value = "productId") Long productId) {
         productDbService.deleteProduct(productId);
     }

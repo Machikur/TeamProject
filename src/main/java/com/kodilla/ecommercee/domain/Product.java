@@ -1,6 +1,9 @@
 package com.kodilla.ecommercee.domain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -24,7 +27,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "PRODUCT_ID")
     private Long productId;
-  
+
     @Column(name = "NAME", unique = true)
     private String productName;
 

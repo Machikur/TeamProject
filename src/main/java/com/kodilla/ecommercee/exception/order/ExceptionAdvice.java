@@ -20,5 +20,7 @@ public class ExceptionAdvice extends Exception {
     @ResponseBody
     @ExceptionHandler(ProductNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String productNotFound(ProductNotFoundException e){ return e.getMessage();}
+    public String productNotFound(ProductNotFoundException e) {
+        return e.getMessage();
+    }
 }

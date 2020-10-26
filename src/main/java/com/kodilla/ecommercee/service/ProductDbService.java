@@ -31,6 +31,10 @@ public class ProductDbService {
         }
     }
 
+    public List<Product> findAllProductsByIdList(List<Long> identificatorsList) {
+        return productDao.findAllByProductIdIn(identificatorsList);
+    }
+
     public void deleteProduct(final Long productId) {
         productDao.deleteById(productId);
     }

@@ -8,10 +8,7 @@ import com.kodilla.ecommercee.service.GroupDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -34,7 +31,7 @@ public class GroupController {
 
     @PostMapping(value = "createGroup")
     public void createGroup(@RequestBody GroupDto groupDto) throws GroupConflictException {
-         groupDbService.saveGroup(groupMapper.mapToGroup(groupDto));
+        groupDbService.saveGroup(groupMapper.mapToGroup(groupDto));
     }
 
     @PutMapping(value = "updateGroup")

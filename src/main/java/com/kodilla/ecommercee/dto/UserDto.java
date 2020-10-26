@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
@@ -25,6 +26,4 @@ public class UserDto {
         this.password = password;
     }
 
-    public UserDto() {
-    }
 }
