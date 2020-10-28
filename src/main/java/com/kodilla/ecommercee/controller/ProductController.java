@@ -23,27 +23,27 @@ public class ProductController {
     @Autowired
     private ProductMapper productMapper;
 
-    @GetMapping(value = "getAllProducts")
+    @GetMapping(value = "products")
     public List<ProductDto> getAllProducts() {
         return productMapper.mapToProductDtoList(productDbService.getAllProducts());
     }
 
-    @GetMapping(value = "getProduct")
+    @GetMapping(value = "product")
     public ProductDto getProduct(@RequestParam(value = "productId") Long productId) throws ProductNotFoundException {
         return productMapper.mapToProductDto(productDbService.getProductById(productId).orElseThrow(ProductNotFoundException::new));
     }
 
-    @PostMapping(value = "createProduct", consumes = APPLICATION_JSON_VALUE)
+    @PostMapping(value = "product", consumes = APPLICATION_JSON_VALUE)
     public void createProduct(@RequestBody ProductDto productDto) throws ProductConflictException {
         productDbService.saveProduct(productMapper.mapToProduct(productDto));
     }
 
-    @PutMapping(value = "updateProduct")
+    @PutMapping(value = "product")
     public ProductDto updateProduct(@RequestBody ProductDto productDto) throws ProductConflictException {
         return productMapper.mapToProductDto(productDbService.saveProduct(productMapper.mapToProduct(productDto)));
     }
 
-    @DeleteMapping(value = "deleteProduct")
+    @DeleteMapping(value = "product")
     public void deleteProduct(@RequestParam(value = "productId") Long productId) {
         productDbService.deleteProduct(productId);
     }

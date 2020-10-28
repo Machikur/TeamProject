@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @PostMapping(value = "createUser")
-    public void createUser(@RequestBody UserDto userDto) throws UserConflictException {
+    public void createUser(@RequestBody UserDto userDto) throws UserConflictException, UserNotFoundException {
         service.addNewUser(userMapper.mapUserDtoToUser(userDto));
     }
 

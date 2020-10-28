@@ -19,27 +19,27 @@ public class GroupController {
     @Autowired
     private GroupMapper groupMapper;
 
-    @GetMapping(value = "getAllGroups")
+    @GetMapping(value = "groups")
     public List<GroupDto> getGroups() {
         return groupMapper.mapToGroupDtoList(groupDbService.getAllGroups());
     }
 
-    @GetMapping(value = "getGroup")
+    @GetMapping(value = "group")
     public GroupDto getGroupById(@RequestParam Long groupId) throws GroupNotFoundException {
         return groupMapper.mapToGroupDto(groupDbService.getGroup(groupId).orElseThrow(GroupNotFoundException::new));
     }
 
-    @PostMapping(value = "createGroup")
+    @PostMapping(value = "group")
     public void createGroup(@RequestBody GroupDto groupDto) throws GroupConflictException {
         groupDbService.saveGroup(groupMapper.mapToGroup(groupDto));
     }
 
-    @PutMapping(value = "updateGroup")
+    @PutMapping(value = "group")
     public GroupDto updateGroup(@RequestBody GroupDto groupDto) throws GroupConflictException {
         return groupMapper.mapToGroupDto(groupDbService.saveGroup(groupMapper.mapToGroup(groupDto)));
     }
 
-    @DeleteMapping(value = "deleteGroup")
+    @DeleteMapping(value = "group")
     public void deleteGroup(@RequestParam Long groupId) throws GroupNotFoundException {
         groupDbService.deleteGroup(groupId);
     }

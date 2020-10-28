@@ -2,6 +2,7 @@ package com.kodilla.ecommercee.mapper;
 
 import com.kodilla.ecommercee.domain.User;
 import com.kodilla.ecommercee.dto.UserDto;
+import com.kodilla.ecommercee.exception.user.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,7 @@ public class UserMapper {
     @Autowired
     private OrderMapper orderMapper;
 
-    public User mapUserDtoToUser(UserDto userDto) {
+    public User mapUserDtoToUser(UserDto userDto) throws UserNotFoundException {
         return new User(
                 userDto.getUserId(),
                 userDto.getUsername(),

@@ -69,7 +69,7 @@ public class UserDbService {
         return message;
     }
 
-    private User findById(long userId) throws UserNotFoundException {
+    public User findById(long userId) throws UserNotFoundException {
         return userDao.findById(userId).orElseThrow(() -> new UserNotFoundException("Użytkownik nie istnieje lub podano błędne dane"));
     }
 

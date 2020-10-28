@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/")
 public class CartController {
 
     @Autowired
@@ -27,27 +27,27 @@ public class CartController {
     private OrderMapper orderMapper;
 
 
-    @PostMapping("/createCart")
-    public Cart createCart(@RequestBody CartDto cartDto) {
+    @PostMapping("cart")
+    public Cart createCart(@RequestBody CartDto cartDto) throws UserNotFoundException {
         return cartDbService.createCart(cartMapper.mapToCart(cartDto));
     }
 
-    @GetMapping("/getCart/{cartId}")
+    @GetMapping("cart")
     public CartDto getCart(@PathVariable Long cartId) throws CartNotFoundException {
         return cartMapper.mapToCartDto(cartDbService.getCartById(cartId));
     }
 
-    @PostMapping("/addProduct/{cartId}/{productId}")
+    @PostMapping("/addProductToCart/{cartId}/{productId}")
     public Cart addProduct(@PathVariable Long cartId, @PathVariable Long productId) throws CartNotFoundException, ProductNotFoundException {
         return cartDbService.addProductToCart(cartId, productId);
     }
 
-    @DeleteMapping("/deleteProduct/{cartId}/{productId}")
+    @DeleteMapping("/deleteProductFromCart/{cartId}/{productId}")
     public Cart deleteProduct(@PathVariable Long cartId, @PathVariable Long productId) throws CartNotFoundException, ProductNotFoundException {
         return cartDbService.deleteProductFromCart(cartId, productId);
     }
 
-    @PostMapping("/createOrder/{cartId}/{userId}")
+    @PostMapping("/createOrderFromCart/{cartId}/{userId}")
     public OrderDto createOrder(@PathVariable Long cartId, @PathVariable Long userId) throws CartNotFoundException, UserNotFoundException {
         return orderMapper.mapToOrderDto(cartDbService.createOrder(cartId, userId));
     }

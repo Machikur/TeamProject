@@ -40,12 +40,5 @@ public class ProductMapper {
                 .collect(Collectors.toList());
     }
 
-    public List<Long> getListOfProductsId(List<Product> products){
-        return products.stream()
-                .mapToLong(Product::getProductId)
-                .boxed()
-                .collect(Collectors.toList());
-
-    }
 
 }

@@ -1,6 +1,5 @@
 package com.kodilla.ecommercee.dto;
 
-import com.kodilla.ecommercee.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +13,6 @@ import java.util.List;
 @Setter
 public class OrderDto {
     private Long orderId;
-    private User user;
+    private long userId;
     private List<ProductDto> products;
 }

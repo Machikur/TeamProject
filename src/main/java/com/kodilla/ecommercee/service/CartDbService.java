@@ -39,13 +39,13 @@ public class CartDbService {
 
     public Cart addProductToCart(final Long cartId, final Long productId) throws CartNotFoundException, ProductNotFoundException {
         Cart cartToAddProduct = cartDao.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
-        cartToAddProduct.getProducts().add(productDao.findById(productId).orElseThrow(() -> new ProductNotFoundException()));
+        cartToAddProduct.getProducts().add(productDao.findById(productId).orElseThrow(ProductNotFoundException::new));
         return cartDao.save(cartToAddProduct);
     }
 
     public Cart deleteProductFromCart(final Long cartId, final Long productId) throws CartNotFoundException, ProductNotFoundException {
         Cart deleteProductFromCart = cartDao.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
-        deleteProductFromCart.getProducts().remove(productDao.findById(productId).orElseThrow(() -> new ProductNotFoundException()));
+        deleteProductFromCart.getProducts().remove(productDao.findById(productId).orElseThrow(ProductNotFoundException::new));
         return cartDao.save(deleteProductFromCart);
     }
 

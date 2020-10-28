@@ -1,8 +1,5 @@
 package com.kodilla.ecommercee.domain;
 
-import com.kodilla.ecommercee.domain.Cart;
-import com.kodilla.ecommercee.domain.Product;
-import com.kodilla.ecommercee.domain.User;
 import com.kodilla.ecommercee.repository.CartDao;
 import com.kodilla.ecommercee.repository.ProductDao;
 import com.kodilla.ecommercee.repository.UserDao;
