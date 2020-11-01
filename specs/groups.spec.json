@@ -1,18 +1,18 @@
 [
-    {
-        "id": 1,
-        "name": "Ubrania"
-    },
-    {
-        "id": 2,
-        "name": "Dodatki"
-    },
-    {
-        "id": 3,
-        "name": "Biżuteria"
-    },
-    {
-        "id": 4,
-        "name": "Obuwie"
-    }
+  {
+    "id": 1,
+    "name": "Ubrania"
+  },
+  {
+    "id": 2,
+    "name": "Dodatki"
+  },
+  {
+    "id": 3,
+    "name": "Biżuteria"
+  },
+  {
+    "id": 4,
+    "name": "Obuwie"
+  }
 ]

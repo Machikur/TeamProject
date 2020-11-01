@@ -13,6 +13,6 @@ import java.util.List;
 @Setter
 public class OrderDto {
     private Long orderId;
-    private long userId;
+    private Long userId;
     private List<ProductDto> products;
 }

@@ -15,5 +15,4 @@ public interface ProductDao extends CrudRepository<Product, Long> {
 
     boolean existsByProductName(String productName);
 
-    List<Product> findAllByProductIdIn(List<Long> list);
 }

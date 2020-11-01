@@ -22,9 +22,9 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NotNull
     @Column(name = "CART_ID")
-    private long cartId;
+    private Long cartId;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(
             name = "CART_PRODUCT",
             joinColumns = {@JoinColumn(name = "CART_ID", referencedColumnName = "CART_ID")},
@@ -35,4 +35,7 @@ public class Cart {
     @OneToOne(mappedBy = "cart", cascade = CascadeType.PERSIST)
     private User user;
 
+    public Cart(List<Product> products) {
+        this.products = products;
+    }
 }

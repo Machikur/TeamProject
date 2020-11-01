@@ -11,6 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 public class GroupDto {
     private Long groupId;
-    private String name;
+    private String groupName;
     private List<ProductDto> products;
 }

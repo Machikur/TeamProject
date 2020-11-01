@@ -11,8 +11,8 @@ import java.util.List;
 @Getter
 public class CartDto {
 
-    private long cartId;
+    private Long cartId;
     private List<ProductDto> products;
-    private long userId;
+    private Long userId;
 
 }

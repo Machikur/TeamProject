@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Component
 public class ProductMapper {
@@ -14,7 +13,6 @@ public class ProductMapper {
 
     public Product mapToProduct(final ProductDto productDto) {
         return new Product(
-                productDto.getProductId(),
                 productDto.getProductName(),
                 productDto.getProductPrice(),
                 productDto.getQuantity());

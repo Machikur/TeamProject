@@ -20,10 +20,10 @@ public class User {
     @Id
     @GeneratedValue
     @Column(name = "USER_ID")
-    private long userId;
+    private Long userId;
 
     @Column(name = "USER_KEY")
-    private String userKey = null;
+    private String userKey;
 
     @NotNull
     @Column(name = "USERNAME")
@@ -49,23 +49,16 @@ public class User {
     private boolean isEnable = true;
 
     @Column(name = "KEY_TIME_CREATED")
-    private LocalDateTime keyTimeCreated = null;
+    private LocalDateTime keyTimeCreated;
 
-    public User(long userId, @NotNull String username, @NotNull String password, Cart cart, List<Order> orders) {
-        this.userId = userId;
+    public User(@NotNull String username, @NotNull String password) {
         this.username = username;
         this.password = password;
-        this.cart = cart;
-        this.orders = orders;
     }
 
     public void setUserKey(String userKey) {
         this.userKey = userKey;
         setKeyTimeCreated(LocalDateTime.now());
-    }
-
-    public void addOrder(Order order) {
-        orders.add(order);
     }
 
     private void setKeyTimeCreated(LocalDateTime localDateTime) {

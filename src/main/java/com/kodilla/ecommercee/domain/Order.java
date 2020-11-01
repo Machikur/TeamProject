@@ -35,8 +35,7 @@ public class Order {
     )
     private List<Product> products;
 
-    public Order(User user, List<Product> products) {
-        this.user = user;
+    public Order(List<Product> products) {
         this.products = products;
     }
 }

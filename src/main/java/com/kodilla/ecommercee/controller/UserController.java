@@ -4,7 +4,6 @@ import com.kodilla.ecommercee.dto.UserDto;
 import com.kodilla.ecommercee.exception.user.KeyException;
 import com.kodilla.ecommercee.exception.user.UserConflictException;
 import com.kodilla.ecommercee.exception.user.UserNotFoundException;
-import com.kodilla.ecommercee.mapper.UserMapper;
 import com.kodilla.ecommercee.service.UserDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,22 +16,20 @@ public class UserController {
     @Autowired
     private UserDbService service;
 
-    @Autowired
-    private UserMapper userMapper;
 
     @GetMapping(value = "checkKeyValidity")
-    public String checkKeyValidityById(@RequestParam long userId) throws UserNotFoundException, KeyException {
+    public String checkKeyValidityById(@RequestParam Long userId) throws UserNotFoundException, KeyException {
         return service.checkValidityById(userId);
     }
 
     @PostMapping(value = "createUser")
-    public void createUser(@RequestBody UserDto userDto) throws UserConflictException, UserNotFoundException {
-        service.addNewUser(userMapper.mapUserDtoToUser(userDto));
+    public UserDto createUser(@RequestBody UserDto userDto) throws UserConflictException {
+        return service.addNewUser(userDto);
     }
 
     @PutMapping(value = "blockUser")
-    public UserDto blockUser(@RequestParam long userId) throws UserNotFoundException {
-        return userMapper.mapUserToUserDto(service.blockUser(userId));
+    public UserDto blockUser(@RequestParam Long userId) throws UserNotFoundException {
+        return service.blockUser(userId);
     }
 
     @PutMapping(value = "createUserKey")

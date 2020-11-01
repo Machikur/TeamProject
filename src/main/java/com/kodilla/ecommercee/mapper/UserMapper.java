@@ -2,7 +2,6 @@ package com.kodilla.ecommercee.mapper;
 
 import com.kodilla.ecommercee.domain.User;
 import com.kodilla.ecommercee.dto.UserDto;
-import com.kodilla.ecommercee.exception.user.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,13 +14,10 @@ public class UserMapper {
     @Autowired
     private OrderMapper orderMapper;
 
-    public User mapUserDtoToUser(UserDto userDto) throws UserNotFoundException {
+    public User mapUserDtoToUser(UserDto userDto) {
         return new User(
-                userDto.getUserId(),
                 userDto.getUsername(),
-                userDto.getPassword(),
-                cartMapper.mapToCart(userDto.getCartDto()),
-                orderMapper.mapToOrderList(userDto.getOrdersDto())
+                userDto.getPassword()
         );
     }
 
@@ -31,7 +27,9 @@ public class UserMapper {
                 user.getUsername(),
                 user.getPassword(),
                 cartMapper.mapToCartDto(user.getCart()),
-                orderMapper.mapToOrderDtoList(user.getOrders())
+                orderMapper.mapToOrderDtoList(user.getOrders()),
+                user.isEnable(),
+                user.getKeyTimeCreated()
         );
     }
 }

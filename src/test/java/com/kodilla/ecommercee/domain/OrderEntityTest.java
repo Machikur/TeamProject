@@ -1,7 +1,6 @@
 package com.kodilla.ecommercee.domain;
 
 
-
 import com.kodilla.ecommercee.repository.OrderDao;
 import com.kodilla.ecommercee.repository.ProductDao;
 import com.kodilla.ecommercee.repository.UserDao;
@@ -77,6 +76,7 @@ public class OrderEntityTest {
         orderDao.deleteAll();
         userDao.deleteAll();
     }
+
     @Test
     public void findOrder() {
         //Given
@@ -91,20 +91,23 @@ public class OrderEntityTest {
         user2.setUserKey("key2");
 
         List<Product> products = new ArrayList<>();
-        Order order = new Order(user, products);
-        Order order2 = new Order(user2, products);
+        Order order = new Order( products);
+        order.setUser(user);
+        Order order2 = new Order(products);
+        order2.setUser(user2);
         //When
         orderDao.save(order);
         orderDao.save(order2);
 
         long id = order2.getOrderId();
-        Optional<Order> orders =  orderDao.findById(id);
+        Optional<Order> orders = orderDao.findById(id);
         //Then
         Assert.assertTrue(orders.isPresent());
         //Cleanup
         orderDao.deleteAll();
         userDao.deleteAll();
     }
+
     @Test
     public void deleteById() {
         //Given
@@ -119,8 +122,10 @@ public class OrderEntityTest {
         user2.setUserKey("key2");
 
         List<Product> products = new ArrayList<>();
-        Order order = new Order(user, products);
-        Order order2 = new Order(user2, products);
+        Order order = new Order( products);
+        order.setUser(user);
+        Order order2 = new Order(products);
+        order2.setUser(user2);
         //When
         orderDao.save(order);
         orderDao.save(order2);
@@ -129,11 +134,12 @@ public class OrderEntityTest {
         orderDao.deleteById(id);
         List<Order> orders = (List<Order>) orderDao.findAll();
         //Then
-        Assert.assertEquals(1,orders.size());
+        Assert.assertEquals(1, orders.size());
         //Cleanup
         orderDao.deleteAll();
         userDao.deleteAll();
     }
+
     @Test
     public void relationWithProductsAndUsers() {
         //Given
@@ -145,7 +151,8 @@ public class OrderEntityTest {
         List<Product> products = new ArrayList<>();
         Product product = new Product();
         products.add(product);
-        Order order = new Order(user, products);
+        Order order = new Order(products);
+        order.setUser(user);
 
         //When
         orderDao.save(order);

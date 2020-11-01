@@ -2,19 +2,29 @@ package com.kodilla.ecommercee.service;
 
 import com.kodilla.ecommercee.domain.Cart;
 import com.kodilla.ecommercee.domain.Order;
+import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.domain.User;
+import com.kodilla.ecommercee.dto.CartDto;
+import com.kodilla.ecommercee.dto.OrderDto;
 import com.kodilla.ecommercee.exception.order.CartNotFoundException;
 import com.kodilla.ecommercee.exception.product.ProductNotFoundException;
 import com.kodilla.ecommercee.exception.user.UserNotFoundException;
+import com.kodilla.ecommercee.mapper.CartMapper;
+import com.kodilla.ecommercee.mapper.OrderMapper;
+import com.kodilla.ecommercee.mapper.ProductMapper;
 import com.kodilla.ecommercee.repository.CartDao;
 import com.kodilla.ecommercee.repository.OrderDao;
 import com.kodilla.ecommercee.repository.ProductDao;
-import com.kodilla.ecommercee.repository.UserDao;
+import com.kodilla.ecommercee.validation.AuthorizationRequired;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+
 
 @Service
+@Transactional
 public class CartDbService {
 
     @Autowired
@@ -27,36 +37,57 @@ public class CartDbService {
     private OrderDao orderDao;
 
     @Autowired
-    private UserDao userDao;
+    private UserDbService userDbService;
 
-    public Cart getCartById(final Long id) throws CartNotFoundException {
-        return cartDao.findById(id).orElseThrow(() -> new CartNotFoundException(id));
+    @Autowired
+    private CartMapper cartMapper;
+
+    @Autowired
+    private ProductMapper productMapper;
+
+    @Autowired
+    private OrderMapper orderMapper;
+
+    public CartDto getCartById(Long id) throws CartNotFoundException {
+        return cartMapper.mapToCartDto(cartDao.findById(id).orElseThrow(() -> new CartNotFoundException(id)));
     }
 
-    public Cart createCart(Cart cart) {
-        return cartDao.save(cart);
+    @AuthorizationRequired
+    public CartDto createCart(Long userId, CartDto cartDto) throws UserNotFoundException {
+        Cart cart = cartMapper.mapToCart(cartDto);
+        User user = userDbService.findById(userId);
+        cart.setProducts(productMapper.mapToProductList(cartDto.getProducts()));
+        cart.setUser(userDbService.findById(userId));
+        user.setCart(cart);
+        return cartMapper.mapToCartDto(cartDao.save(cart));
     }
 
-    public Cart addProductToCart(final Long cartId, final Long productId) throws CartNotFoundException, ProductNotFoundException {
-        Cart cartToAddProduct = cartDao.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
-        cartToAddProduct.getProducts().add(productDao.findById(productId).orElseThrow(ProductNotFoundException::new));
-        return cartDao.save(cartToAddProduct);
-    }
-
-    public Cart deleteProductFromCart(final Long cartId, final Long productId) throws CartNotFoundException, ProductNotFoundException {
-        Cart deleteProductFromCart = cartDao.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
-        deleteProductFromCart.getProducts().remove(productDao.findById(productId).orElseThrow(ProductNotFoundException::new));
-        return cartDao.save(deleteProductFromCart);
-    }
-
-    public Order createOrder(final long cartId, final long userId) throws CartNotFoundException, UserNotFoundException {
+    @AuthorizationRequired
+    public CartDto addProductToCart(Long userId, Long cartId, Long productId) throws CartNotFoundException, ProductNotFoundException {
         Cart cart = cartDao.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
-        User user = userDao.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        Product product = productDao.findById(productId).orElseThrow(ProductNotFoundException::new);
+        cart.getProducts().add(product);
+        product.getCarts().add(cart);
+
+        return cartMapper.mapToCartDto(cartDao.save(cart));
+    }
+
+    @AuthorizationRequired
+    public CartDto deleteProductFromCart(Long userId, Long cartId, Long productId) throws CartNotFoundException, ProductNotFoundException {
+        Cart cart = cartDao.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
+        cart.getProducts().remove(productDao.findById(productId).orElseThrow(ProductNotFoundException::new));
+        return cartMapper.mapToCartDto(cartDao.save(cart));
+    }
+
+    @AuthorizationRequired
+    public OrderDto createOrder(Long userId, Long cartId) throws CartNotFoundException, UserNotFoundException {
+        Cart cart = cartDao.findById(cartId).orElseThrow(() -> new CartNotFoundException(cartId));
+        User user = userDbService.findById(userId);
 
         Order order = new Order();
         order.setUser(user);
         order.setProducts(cart.getProducts());
-
-        return orderDao.save(order);
+        cart.setProducts(new ArrayList<>());
+        return orderMapper.mapToOrderDto(orderDao.save(order));
     }
 }

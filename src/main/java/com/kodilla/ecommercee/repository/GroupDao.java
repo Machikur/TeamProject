@@ -13,4 +13,5 @@ public interface GroupDao extends CrudRepository<Group, Long> {
     @Override
     List<Group> findAll();
 
+    boolean existsGroupByGroupName(String groupName);
 }

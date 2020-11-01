@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,16 +15,12 @@ import java.util.List;
 @Getter
 @Setter
 public class UserDto {
-    private long userId;
+    private Long userId;
     private String username;
     private String password;
     private CartDto cartDto;
     private List<OrderDto> ordersDto = new ArrayList<>();
-
-
-    public UserDto(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
+    private boolean isEnable;
+    private LocalDateTime localDateTime;
 
 }

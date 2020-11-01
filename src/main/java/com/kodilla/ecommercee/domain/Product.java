@@ -37,10 +37,10 @@ public class Product {
     @Column(name = "QUANTITY")
     private int quantity;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "products")
-    private List<Order> orders;
+    @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "products")
+    private List<Order> orders = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "products")
+    @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "products")
     private List<Cart> carts = new ArrayList<>();
 
     public Product(final String productName, final double productPrice, final int quantity) {
@@ -49,10 +49,4 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public Product(Long productId, String productName, double productPrice, int quantity) {
-        this.productId = productId;
-        this.productName = productName;
-        this.productPrice = productPrice;
-        this.quantity = quantity;
-    }
 }

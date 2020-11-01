@@ -15,7 +15,7 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
-@Table(name = "\"GROUPS\"")
+@Table(name = "GroupTable")
 public class Group {
 
     @Id
@@ -31,7 +31,7 @@ public class Group {
             targetEntity = Product.class,
             mappedBy = "group",
             fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL
+            cascade = CascadeType.PERSIST
     )
     private List<Product> products = new ArrayList<>();
 
@@ -39,4 +39,8 @@ public class Group {
         this.groupName = groupName;
     }
 
+    public Group(String groupName, List<Product> products) {
+        this.groupName = groupName;
+        this.products = products;
+    }
 }

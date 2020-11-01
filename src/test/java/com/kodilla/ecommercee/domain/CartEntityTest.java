@@ -3,7 +3,8 @@ package com.kodilla.ecommercee.domain;
 import com.kodilla.ecommercee.repository.CartDao;
 import com.kodilla.ecommercee.repository.ProductDao;
 import com.kodilla.ecommercee.repository.UserDao;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -41,7 +42,6 @@ public class CartEntityTest {
         //CleanUp
         cartDao.deleteById(id);
     }
-
 
 
     @Test
