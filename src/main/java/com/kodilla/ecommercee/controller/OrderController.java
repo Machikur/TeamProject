@@ -1,5 +1,8 @@
 package com.kodilla.ecommercee.controller;
 
+import com.kodilla.ecommercee.aop.userwatcher.Delete;
+import com.kodilla.ecommercee.aop.userwatcher.Save;
+import com.kodilla.ecommercee.aop.userwatcher.Update;
 import com.kodilla.ecommercee.dto.OrderDto;
 import com.kodilla.ecommercee.exception.order.OrderNotFoundException;
 import com.kodilla.ecommercee.exception.user.UserNotFoundException;
@@ -27,19 +30,21 @@ public class OrderController {
         return service.getOrder(orderId);
     }
 
+    @Save
     @PostMapping(value = "order")
-    public void addNewOrder(@RequestBody OrderDto orderDto, @RequestParam Long userId) throws UserNotFoundException {
-        service.saveOrder(userId, orderDto);
+    public OrderDto addNewOrder(@RequestParam Long userId, @RequestBody OrderDto orderDto) throws UserNotFoundException {
+        return service.saveOrder(orderDto);
     }
 
+    @Update
     @PutMapping(value = "order")
-    public OrderDto updateOrder(@RequestParam Long userId, @RequestBody OrderDto orderDto) throws UserNotFoundException {
-        return service.saveOrder(userId, orderDto);
+    public OrderDto updateOrder(@RequestParam Long userId, @RequestBody OrderDto orderDto) throws OrderNotFoundException, UserNotFoundException {
+        return service.updateOrder(orderDto);
     }
 
-
+    @Delete
     @DeleteMapping(value = "order")
-    public void deleteOrder(@RequestParam Long orderId, @RequestParam Long userId) {
-        service.deleteOrder(userId, orderId);
+    public void deleteOrder(@RequestParam Long userId, @RequestParam Long orderId) {
+        service.deleteOrder(orderId);
     }
 }

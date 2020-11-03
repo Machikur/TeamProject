@@ -5,7 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +26,11 @@ public class User {
     @Column(name = "USER_KEY")
     private String userKey;
 
-    @NotNull
-    @Column(name = "USERNAME")
+    @NotBlank
+    @Column(name = "USERNAME", unique = true)
     private String username;
 
-    @NotNull
+    @NotBlank
     @Column(name = "PASSWORD")
     private String password;
 
@@ -51,7 +52,8 @@ public class User {
     @Column(name = "KEY_TIME_CREATED")
     private LocalDateTime keyTimeCreated;
 
-    public User(@NotNull String username, @NotNull String password) {
+    public User(@Size(min = 3) String username,
+                @Size(min = 3) String password) {
         this.username = username;
         this.password = password;
     }

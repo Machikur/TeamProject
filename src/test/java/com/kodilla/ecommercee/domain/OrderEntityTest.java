@@ -91,7 +91,7 @@ public class OrderEntityTest {
         user2.setUserKey("key2");
 
         List<Product> products = new ArrayList<>();
-        Order order = new Order( products);
+        Order order = new Order(products);
         order.setUser(user);
         Order order2 = new Order(products);
         order2.setUser(user2);
@@ -122,7 +122,7 @@ public class OrderEntityTest {
         user2.setUserKey("key2");
 
         List<Product> products = new ArrayList<>();
-        Order order = new Order( products);
+        Order order = new Order(products);
         order.setUser(user);
         Order order2 = new Order(products);
         order2.setUser(user2);

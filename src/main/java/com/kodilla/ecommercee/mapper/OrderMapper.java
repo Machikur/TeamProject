@@ -2,7 +2,6 @@ package com.kodilla.ecommercee.mapper;
 
 import com.kodilla.ecommercee.domain.Order;
 import com.kodilla.ecommercee.dto.OrderDto;
-import com.kodilla.ecommercee.service.UserDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,11 +11,12 @@ import java.util.stream.Collectors;
 @Component
 public class OrderMapper {
 
-    @Autowired
     private ProductMapper productMapper;
 
     @Autowired
-    private UserDbService userDbService;
+    public OrderMapper(ProductMapper productMapper) {
+        this.productMapper = productMapper;
+    }
 
     public Order mapToOrder(final OrderDto orderDto) {
         return new Order(

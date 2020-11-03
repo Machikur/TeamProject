@@ -3,7 +3,6 @@ package com.kodilla.ecommercee.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
 public class UserDto {
     private Long userId;
     private String username;
@@ -21,6 +19,6 @@ public class UserDto {
     private CartDto cartDto;
     private List<OrderDto> ordersDto = new ArrayList<>();
     private boolean isEnable;
-    private LocalDateTime localDateTime;
+    private LocalDateTime keyTimeCreated;
 
 }

@@ -21,29 +21,30 @@ import java.util.ArrayList;
 @Transactional
 public class UserDbService {
 
-    @Autowired
     private UserDao userDao;
-
-    @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    public UserDbService(UserDao userDao, UserMapper userMapper) {
+        this.userDao = userDao;
+        this.userMapper = userMapper;
+    }
+
     public UserDto addNewUser(UserDto userDto) throws UserConflictException {
-        if (!userDao.existsByUsername(userDto.getUsername())) {
-            User user = userMapper.mapUserDtoToUser(userDto);
-            Cart cart = new Cart();
-            user.setCart(cart);
-            cart.setUser(user);
-            user.setOrders(new ArrayList<>());
-            return userMapper.mapUserToUserDto(userDao.save(user));
-        } else {
+        if (userDao.existsByUsername(userDto.getUsername())) {
             throw new UserConflictException("Użytkownik już istnieje");
         }
+        User user = userMapper.mapUserDtoToUser(userDto);
+        Cart cart = new Cart();
+        user.setCart(cart);
+        cart.setUser(user);
+        user.setOrders(new ArrayList<>());
+        return userMapper.mapUserToUserDto(userDao.save(user));
     }
 
     public UserDto blockUser(Long userId) throws UserNotFoundException {
         User user = findById(userId);
         user.setEnable(false);
-        updateUser(user);
         return userMapper.mapUserToUserDto(user);
     }
 

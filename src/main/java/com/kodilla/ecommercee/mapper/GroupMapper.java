@@ -11,9 +11,12 @@ import java.util.stream.Collectors;
 @Component
 public class GroupMapper {
 
-    @Autowired
     private ProductMapper productMapper;
 
+    @Autowired
+    public GroupMapper(ProductMapper productMapper) {
+        this.productMapper = productMapper;
+    }
 
     public Group mapToGroup(final GroupDto groupDto) {
         return new Group(

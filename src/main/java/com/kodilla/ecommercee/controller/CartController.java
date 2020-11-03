@@ -1,5 +1,8 @@
 package com.kodilla.ecommercee.controller;
 
+import com.kodilla.ecommercee.aop.userwatcher.Delete;
+import com.kodilla.ecommercee.aop.userwatcher.Save;
+import com.kodilla.ecommercee.aop.userwatcher.Update;
 import com.kodilla.ecommercee.dto.CartDto;
 import com.kodilla.ecommercee.dto.OrderDto;
 import com.kodilla.ecommercee.exception.order.CartNotFoundException;
@@ -17,9 +20,10 @@ public class CartController {
     @Autowired
     private CartDbService cartDbService;
 
+    @Save
     @PostMapping("cart")
     public CartDto createCart(@RequestParam Long userId, @RequestBody CartDto cartDto) throws UserNotFoundException {
-        return cartDbService.createCart(userId, cartDto);
+        return cartDbService.createCart(cartDto);
     }
 
     @GetMapping("cart")
@@ -27,24 +31,27 @@ public class CartController {
         return cartDbService.getCartById(cartId);
     }
 
+    @Update
     @PutMapping("addProductToCart")
     public CartDto addProducts(@RequestParam Long userId, @RequestParam Long cartId, @RequestParam Long productId)
             throws CartNotFoundException, ProductNotFoundException {
 
-        return cartDbService.addProductToCart(userId, cartId, productId);
+        return cartDbService.addProductToCart(cartId, productId);
     }
 
+    @Delete
     @DeleteMapping("deleteProductFromCart")
     public CartDto deleteProduct(@RequestParam Long userId, @RequestParam Long cartId, @RequestParam Long productId)
             throws CartNotFoundException, ProductNotFoundException {
 
-        return cartDbService.deleteProductFromCart(userId, cartId, productId);
+        return cartDbService.deleteProductFromCart(cartId, productId);
     }
 
+    @Save
     @PostMapping("createOrderFromCart")
     public OrderDto createOrder(@RequestParam Long userId, @RequestParam Long cartId)
             throws CartNotFoundException, UserNotFoundException {
 
-        return cartDbService.createOrder(userId, cartId);
+        return cartDbService.createOrder(cartId);
     }
 }

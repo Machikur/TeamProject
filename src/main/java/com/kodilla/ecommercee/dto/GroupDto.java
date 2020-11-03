@@ -9,8 +9,13 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GroupDto {
+public class GroupDto implements ShopComponent {
     private Long groupId;
     private String groupName;
     private List<ProductDto> products;
+
+    @Override
+    public Long getComponentId() {
+        return groupId;
+    }
 }

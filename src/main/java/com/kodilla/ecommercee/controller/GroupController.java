@@ -1,5 +1,8 @@
 package com.kodilla.ecommercee.controller;
 
+import com.kodilla.ecommercee.aop.userwatcher.Delete;
+import com.kodilla.ecommercee.aop.userwatcher.Save;
+import com.kodilla.ecommercee.aop.userwatcher.Update;
 import com.kodilla.ecommercee.dto.GroupDto;
 import com.kodilla.ecommercee.exception.group.GroupConflictException;
 import com.kodilla.ecommercee.exception.group.GroupNotFoundException;
@@ -28,25 +31,29 @@ public class GroupController {
         return groupDbService.getGroup(groupId);
     }
 
+    @Save
     @PostMapping(value = "group")
-    public void createGroup(@RequestParam Long userId, @RequestBody GroupDto groupDto) throws GroupConflictException {
-        groupDbService.saveGroup(userId, groupDto);
+    public GroupDto createGroup(@RequestParam Long userId, @RequestBody GroupDto groupDto) throws GroupConflictException {
+        return groupDbService.saveGroup(groupDto);
     }
 
+    @Update
     @PutMapping(value = "group")
-    public GroupDto updateGroup(@RequestParam Long userId, @RequestBody GroupDto groupDto) throws GroupConflictException {
-        return groupDbService.saveGroup(userId, groupDto);
+    public GroupDto updateGroup(@RequestParam Long userId, @RequestBody GroupDto groupDto) throws GroupNotFoundException {
+        return groupDbService.updateGroup(groupDto);
     }
 
+    @Delete
     @DeleteMapping(value = "group")
     public void deleteGroup(@RequestParam Long userId, @RequestParam Long groupId) throws GroupNotFoundException {
-        groupDbService.deleteGroup(userId, groupId);
+        groupDbService.deleteGroup(groupId);
     }
 
+    @Update
     @PutMapping(value = "addProductToGroup")
     public GroupDto addProductToGroup(@RequestParam Long userId, @RequestParam Long groupId, @RequestParam Long productId)
             throws GroupNotFoundException, ProductNotFoundException {
 
-        return groupDbService.addProductToGroup(userId, groupId, productId);
+        return groupDbService.addProductToGroup(groupId, productId);
     }
 }

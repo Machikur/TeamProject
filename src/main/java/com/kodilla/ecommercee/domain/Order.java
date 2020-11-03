@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @AllArgsConstructor
@@ -16,9 +15,9 @@ import java.util.List;
 @Getter
 @Table(name = "ORDERS")
 public class Order {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @NotNull
+    @GeneratedValue
     @Column(name = "ORDER_ID")
     private Long orderId;
 
