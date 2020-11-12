@@ -17,34 +17,37 @@ import java.util.List;
 @RequestMapping("/v1/user")
 public class UserController {
 
-    @Autowired
-    private UserDbService service;
+    private final UserDbService service;
+    private final UserOperationService userOperationService;
 
     @Autowired
-    private UserOperationService userOperationService;
+    public UserController(UserDbService service, UserOperationService userOperationService) {
+        this.service = service;
+        this.userOperationService = userOperationService;
+    }
 
-    @GetMapping(value = "getListOfUserOperations")
+    @GetMapping("/listOfUserOperations")
     public List<UserOperationDto> getListOfUserOperations(Long userId) {
         return userOperationService.getListOfUserOperations(userId);
     }
 
 
-    @GetMapping(value = "checkKeyValidity")
+    @GetMapping("/checkKeyValidity")
     public String checkKeyValidityById(@RequestParam Long userId) throws UserNotFoundException, KeyException {
         return service.checkValidityById(userId);
     }
 
-    @PostMapping(value = "createUser")
+    @PostMapping("/user")
     public UserDto createUser(@RequestBody UserDto userDto) throws UserConflictException {
         return service.addNewUser(userDto);
     }
 
-    @PutMapping(value = "blockUser")
+    @PutMapping("/blockUser")
     public UserDto blockUser(@RequestParam Long userId) throws UserNotFoundException {
         return service.blockUser(userId);
     }
 
-    @PutMapping(value = "createUserKey")
+    @PutMapping("/userKey")
     public String createUserKey(@RequestParam String username, @RequestParam String password) throws UserNotFoundException, KeyException, UserConflictException {
         return service.createKeyForUser(username, password);
     }

@@ -1,8 +1,7 @@
 package com.kodilla.ecommercee.controller;
 
-import com.kodilla.ecommercee.aop.userwatcher.Delete;
-import com.kodilla.ecommercee.aop.userwatcher.Save;
-import com.kodilla.ecommercee.aop.userwatcher.Update;
+import com.kodilla.ecommercee.aop.userwatcher.OperationType;
+import com.kodilla.ecommercee.aop.userwatcher.UserOperation;
 import com.kodilla.ecommercee.dto.ProductDto;
 import com.kodilla.ecommercee.exception.product.ProductConflictException;
 import com.kodilla.ecommercee.exception.product.ProductNotFoundException;
@@ -17,33 +16,37 @@ import java.util.List;
 @RequestMapping("/v1")
 public class ProductController {
 
-    @Autowired
-    private ProductDbService productDbService;
+    private final ProductDbService productDbService;
 
-    @GetMapping(value = "products")
+    @Autowired
+    public ProductController(ProductDbService productDbService) {
+        this.productDbService = productDbService;
+    }
+
+    @GetMapping("/products")
     public List<ProductDto> getAllProducts() {
         return productDbService.getAllProducts();
     }
 
-    @GetMapping(value = "product")
+    @GetMapping("/product")
     public ProductDto getProduct(@RequestParam Long productId) throws ProductNotFoundException {
         return productDbService.getProductById(productId);
     }
 
-    @Save
-    @PostMapping(value = "product")
+    @UserOperation(operationtype = OperationType.CREATE)
+    @PostMapping("/product")
     public ProductDto createProduct(@RequestParam Long userId, @RequestBody ProductDto productDto) throws ProductConflictException {
         return productDbService.saveProduct(productDto);
     }
 
-    @Update
-    @PutMapping(value = "product")
+    @UserOperation(operationtype = OperationType.UPDATE)
+    @PutMapping("/product")
     public ProductDto updateProduct(@RequestParam Long userId, @RequestBody ProductDto productDto) throws ProductNotFoundException {
         return productDbService.updateProduct(productDto);
     }
 
-    @Delete
-    @DeleteMapping(value = "product")
+    @UserOperation(operationtype = OperationType.DELETE)
+    @DeleteMapping("/product")
     public void deleteProduct(@RequestParam Long userId, @RequestParam Long productId) {
         productDbService.deleteProduct(productId);
     }

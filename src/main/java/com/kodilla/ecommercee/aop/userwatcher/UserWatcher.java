@@ -2,16 +2,16 @@ package com.kodilla.ecommercee.aop.userwatcher;
 
 import com.kodilla.ecommercee.dto.ShopComponent;
 import com.kodilla.ecommercee.dto.UserOperationDto;
-import com.kodilla.ecommercee.exception.user.KeyException;
-import com.kodilla.ecommercee.exception.user.UserNotFoundException;
-import com.kodilla.ecommercee.service.UserDbService;
 import com.kodilla.ecommercee.service.UserOperationService;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Method;
 
 @Component
 @Aspect
@@ -19,46 +19,32 @@ import org.springframework.stereotype.Component;
 public class UserWatcher {
 
 
-    @Autowired
-    private UserOperationService userOperationService;
+    private final UserOperationService userOperationService;
 
     @Autowired
-    private UserDbService userDbService;
-
-    @Around("execution(* *(..)) && @annotation(com.kodilla.ecommercee.aop.userwatcher.Save) && args(userId,..)")
-    public ShopComponent saveOperation(ProceedingJoinPoint proceedingJoinPoint, Long userId) throws Throwable {
-        return operation(proceedingJoinPoint, userId, "save");
+    public UserWatcher(UserOperationService userOperationService) {
+        this.userOperationService = userOperationService;
     }
 
-    @Around("execution(* *(..)) && @annotation(com.kodilla.ecommercee.aop.userwatcher.Update) && args(userId,..)")
-    public ShopComponent updateOperation(ProceedingJoinPoint proceedingJoinPoint, Long userId) throws Throwable {
-        return operation(proceedingJoinPoint, userId, "update");
-    }
 
-    @Around("execution(* *(..)) && @annotation(com.kodilla.ecommercee.aop.userwatcher.Delete) && args(userId,..)")
-    public ShopComponent deleteOperation(ProceedingJoinPoint proceedingJoinPoint, Long userId) throws Throwable {
-        return operation(proceedingJoinPoint, userId, "Delete");
-    }
-
-    public ShopComponent operation(ProceedingJoinPoint proceedingJoinPoint, Long userId, String action) throws Throwable {
-        checkValidityById(userId);
+    @Around("execution(* *(..)) && @annotation(com.kodilla.ecommercee.aop.userwatcher.UserOperation) && args(userId,..)")
+    public ShopComponent operation(ProceedingJoinPoint proceedingJoinPoint, Long userId) throws Throwable {
+        String action = getAnnotationValue(proceedingJoinPoint);
         ShopComponent result;
         result = (ShopComponent) proceedingJoinPoint.proceed();
         String className = result.getClass().getSimpleName().replace("Dto", "");
         UserOperationDto userOperationDto = new UserOperationDto(userId, action + ": " +
                 className + " with id: " + result.getComponentId());
         userOperationService.save(userOperationDto);
-        log.info("user " + userId + " done action: " + action + " in " + className + " by id:" + result.getComponentId());
+        log.info("User by id: {} done action: {}, in class: {} id: {}", userId, action, className, result.getComponentId());
         return result;
     }
 
-    private void checkValidityById(Long userId) throws KeyException {
-        try {
-            userDbService.checkValidityById(userId);
-        } catch (
-                KeyException | UserNotFoundException s) {
-            log.warn("Próba nieautoryzowanej operacji przez użytkownika o numerze id: " + userId);
-            throw new KeyException(s.getMessage());
-        }
+    private String getAnnotationValue(ProceedingJoinPoint proceedingJoinPoint) throws NoSuchMethodException {
+        MethodSignature signature = (MethodSignature) proceedingJoinPoint.getSignature();
+        Method method = proceedingJoinPoint.getTarget().getClass()
+                .getMethod(signature.getName(), signature.getMethod().getParameterTypes());
+        return method.getAnnotation(UserOperation.class).operationtype().getDesc();
     }
+
 }

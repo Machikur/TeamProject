@@ -11,8 +11,12 @@ import java.util.stream.Collectors;
 @Component
 public class UserOperationMapper {
 
+    private final UserMapper userMapper;
+
     @Autowired
-    private UserMapper userMapper;
+    public UserOperationMapper(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
 
     public UserOperation mapToUserOperation(UserOperationDto userOperationDto) {
         return new UserOperation(

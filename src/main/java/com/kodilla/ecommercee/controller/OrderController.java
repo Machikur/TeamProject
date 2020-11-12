@@ -1,8 +1,7 @@
 package com.kodilla.ecommercee.controller;
 
-import com.kodilla.ecommercee.aop.userwatcher.Delete;
-import com.kodilla.ecommercee.aop.userwatcher.Save;
-import com.kodilla.ecommercee.aop.userwatcher.Update;
+import com.kodilla.ecommercee.aop.userwatcher.OperationType;
+import com.kodilla.ecommercee.aop.userwatcher.UserOperation;
 import com.kodilla.ecommercee.dto.OrderDto;
 import com.kodilla.ecommercee.exception.order.OrderNotFoundException;
 import com.kodilla.ecommercee.exception.user.UserNotFoundException;
@@ -17,33 +16,37 @@ import java.util.List;
 @RequestMapping("/v1")
 public class OrderController {
 
-    @Autowired
-    private OrderDbService service;
+    private final OrderDbService service;
 
-    @GetMapping(value = "orders")
+    @Autowired
+    public OrderController(OrderDbService service) {
+        this.service = service;
+    }
+
+    @GetMapping("/orders")
     public List<OrderDto> getOrders() {
         return service.getAllOrders();
     }
 
-    @GetMapping(value = "order")
+    @GetMapping("/order")
     public OrderDto getOrder(@RequestParam Long orderId) throws OrderNotFoundException {
         return service.getOrder(orderId);
     }
 
-    @Save
-    @PostMapping(value = "order")
+    @UserOperation(operationtype = OperationType.CREATE)
+    @PostMapping("/order")
     public OrderDto addNewOrder(@RequestParam Long userId, @RequestBody OrderDto orderDto) throws UserNotFoundException {
         return service.saveOrder(orderDto);
     }
 
-    @Update
-    @PutMapping(value = "order")
+    @UserOperation(operationtype = OperationType.UPDATE)
+    @PutMapping("/order")
     public OrderDto updateOrder(@RequestParam Long userId, @RequestBody OrderDto orderDto) throws OrderNotFoundException, UserNotFoundException {
         return service.updateOrder(orderDto);
     }
 
-    @Delete
-    @DeleteMapping(value = "order")
+    @UserOperation(operationtype = OperationType.DELETE)
+    @DeleteMapping("/order")
     public void deleteOrder(@RequestParam Long userId, @RequestParam Long orderId) {
         service.deleteOrder(orderId);
     }

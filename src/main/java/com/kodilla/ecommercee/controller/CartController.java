@@ -1,8 +1,7 @@
 package com.kodilla.ecommercee.controller;
 
-import com.kodilla.ecommercee.aop.userwatcher.Delete;
-import com.kodilla.ecommercee.aop.userwatcher.Save;
-import com.kodilla.ecommercee.aop.userwatcher.Update;
+import com.kodilla.ecommercee.aop.userwatcher.OperationType;
+import com.kodilla.ecommercee.aop.userwatcher.UserOperation;
 import com.kodilla.ecommercee.dto.CartDto;
 import com.kodilla.ecommercee.dto.OrderDto;
 import com.kodilla.ecommercee.exception.order.CartNotFoundException;
@@ -17,38 +16,42 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/")
 public class CartController {
 
-    @Autowired
-    private CartDbService cartDbService;
+    private final CartDbService cartDbService;
 
-    @Save
-    @PostMapping("cart")
+    @Autowired
+    public CartController(CartDbService cartDbService) {
+        this.cartDbService = cartDbService;
+    }
+
+    @UserOperation(operationtype = OperationType.CREATE)
+    @PostMapping("/cart")
     public CartDto createCart(@RequestParam Long userId, @RequestBody CartDto cartDto) throws UserNotFoundException {
         return cartDbService.createCart(cartDto);
     }
 
-    @GetMapping("cart")
+    @GetMapping("/cart")
     public CartDto getCart(@RequestParam Long cartId) throws CartNotFoundException {
         return cartDbService.getCartById(cartId);
     }
 
-    @Update
-    @PutMapping("addProductToCart")
+    @UserOperation(operationtype = OperationType.UPDATE)
+    @PutMapping("/productToCart")
     public CartDto addProducts(@RequestParam Long userId, @RequestParam Long cartId, @RequestParam Long productId)
             throws CartNotFoundException, ProductNotFoundException {
 
         return cartDbService.addProductToCart(cartId, productId);
     }
 
-    @Delete
-    @DeleteMapping("deleteProductFromCart")
+    @UserOperation(operationtype = OperationType.DELETE)
+    @DeleteMapping("/productFromCart")
     public CartDto deleteProduct(@RequestParam Long userId, @RequestParam Long cartId, @RequestParam Long productId)
             throws CartNotFoundException, ProductNotFoundException {
 
         return cartDbService.deleteProductFromCart(cartId, productId);
     }
 
-    @Save
-    @PostMapping("createOrderFromCart")
+    @UserOperation(operationtype = OperationType.CREATE)
+    @PostMapping("/orderFromCart")
     public OrderDto createOrder(@RequestParam Long userId, @RequestParam Long cartId)
             throws CartNotFoundException, UserNotFoundException {
 

@@ -1,11 +1,11 @@
-package com.kodilla.ecommercee.aop.userwatcher;
+package com.kodilla.ecommercee.aop.validate;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Delete {
+public @interface AuthorisationRequired {
 }

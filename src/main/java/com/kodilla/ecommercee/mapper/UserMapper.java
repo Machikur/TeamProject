@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMapper {
 
-    private CartMapper cartMapper;
-    private OrderMapper orderMapper;
+    private final CartMapper cartMapper;
+    private final OrderMapper orderMapper;
 
     @Autowired
     public UserMapper(CartMapper cartMapper, OrderMapper orderMapper) {

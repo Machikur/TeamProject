@@ -1,8 +1,7 @@
 package com.kodilla.ecommercee.controller;
 
-import com.kodilla.ecommercee.aop.userwatcher.Delete;
-import com.kodilla.ecommercee.aop.userwatcher.Save;
-import com.kodilla.ecommercee.aop.userwatcher.Update;
+import com.kodilla.ecommercee.aop.userwatcher.OperationType;
+import com.kodilla.ecommercee.aop.userwatcher.UserOperation;
 import com.kodilla.ecommercee.dto.GroupDto;
 import com.kodilla.ecommercee.exception.group.GroupConflictException;
 import com.kodilla.ecommercee.exception.group.GroupNotFoundException;
@@ -18,39 +17,43 @@ import java.util.List;
 @RequestMapping("/v1")
 public class GroupController {
 
-    @Autowired
-    private GroupDbService groupDbService;
+    private final GroupDbService groupDbService;
 
-    @GetMapping(value = "groups")
+    @Autowired
+    public GroupController(GroupDbService groupDbService) {
+        this.groupDbService = groupDbService;
+    }
+
+    @GetMapping("groups")
     public List<GroupDto> getGroups() {
         return groupDbService.getAllGroups();
     }
 
-    @GetMapping(value = "group")
+    @GetMapping("/group")
     public GroupDto getGroupById(@RequestParam Long groupId) throws GroupNotFoundException {
         return groupDbService.getGroup(groupId);
     }
 
-    @Save
-    @PostMapping(value = "group")
+    @UserOperation(operationtype = OperationType.CREATE)
+    @PostMapping("/group")
     public GroupDto createGroup(@RequestParam Long userId, @RequestBody GroupDto groupDto) throws GroupConflictException {
         return groupDbService.saveGroup(groupDto);
     }
 
-    @Update
-    @PutMapping(value = "group")
+    @UserOperation(operationtype = OperationType.UPDATE)
+    @PutMapping("/group")
     public GroupDto updateGroup(@RequestParam Long userId, @RequestBody GroupDto groupDto) throws GroupNotFoundException {
         return groupDbService.updateGroup(groupDto);
     }
 
-    @Delete
-    @DeleteMapping(value = "group")
+    @UserOperation(operationtype = OperationType.DELETE)
+    @DeleteMapping("/group")
     public void deleteGroup(@RequestParam Long userId, @RequestParam Long groupId) throws GroupNotFoundException {
         groupDbService.deleteGroup(groupId);
     }
 
-    @Update
-    @PutMapping(value = "addProductToGroup")
+    @UserOperation(operationtype = OperationType.UPDATE)
+    @PutMapping("/productToGroup")
     public GroupDto addProductToGroup(@RequestParam Long userId, @RequestParam Long groupId, @RequestParam Long productId)
             throws GroupNotFoundException, ProductNotFoundException {
 

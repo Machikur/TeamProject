@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Component
 public class OrderMapper {
 
-    private ProductMapper productMapper;
+    private final ProductMapper productMapper;
 
     @Autowired
     public OrderMapper(ProductMapper productMapper) {

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CartMapper {
 
-    private ProductMapper productMapper;
+    private final ProductMapper productMapper;
 
     @Autowired
     public CartMapper(ProductMapper productMapper) {

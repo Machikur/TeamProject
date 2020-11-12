@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.CONFLICT)
 public class GroupConflictException extends Exception {
-    private final static String message = "Grupa o podanym ID juz istnieje";
+    private final static String message = "Grupa o podanej nazwie juz istnieje";
 
     public GroupConflictException() {
         super(message);
